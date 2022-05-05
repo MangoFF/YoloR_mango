@@ -242,7 +242,7 @@ def test(data,
     # Save JSON
     if save_json and len(jdict):
         w = Path(weights[0] if isinstance(weights, list) else weights).stem if weights is not None else ''  # weights
-        anno_json = glob.glob('../coco/annotations/instances_val*.json')[0]  # annotations json
+        anno_json = glob.glob('yolor/datasets/coco/instances_val*.json')[0]  # annotations json
         pred_json = str(save_dir / f"{w}_predictions.json")  # predictions json
         print('\nEvaluating pycocotools mAP... saving %s...' % pred_json)
         with open(pred_json, 'w') as f:
@@ -276,10 +276,10 @@ def test(data,
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog='test.py')
-    parser.add_argument('--weights', nargs='+', type=str, default='yolor-p6.pt', help='model.pt path(s)')
-    parser.add_argument('--data', type=str, default='data/coco.yaml', help='*.data path')
-    parser.add_argument('--batch-size', type=int, default=16, help='size of each image batch')
-    parser.add_argument('--img-size', type=int, default=1280, help='inference size (pixels)')
+    parser.add_argument('--weights', nargs='+', type=str, default='yolor/best.pt', help='model.pt path(s)')
+    parser.add_argument('--data', type=str, default='yolor/data/coco.yaml', help='*.data path')
+    parser.add_argument('--batch-size', type=int, default=1, help='size of each image batch')
+    parser.add_argument('--img-size', type=int, default=640, help='inference size (pixels)')
     parser.add_argument('--conf-thres', type=float, default=0.001, help='object confidence threshold')
     parser.add_argument('--iou-thres', type=float, default=0.65, help='IOU threshold for NMS')
     parser.add_argument('--task', default='val', help="'val', 'test', 'study'")
@@ -290,7 +290,7 @@ if __name__ == '__main__':
     parser.add_argument('--save-txt', action='store_true', help='save results to *.txt')
     parser.add_argument('--save-conf', action='store_true', help='save confidences in --save-txt labels')
     parser.add_argument('--save-json', action='store_true', help='save a cocoapi-compatible JSON results file')
-    parser.add_argument('--project', default='runs/test', help='save to project/name')
+    parser.add_argument('--project', default='yolor/runs/test', help='save to project/name')
     parser.add_argument('--name', default='exp', help='save to project/name')
     parser.add_argument('--exist-ok', action='store_true', help='existing project/name ok, do not increment')
     opt = parser.parse_args()

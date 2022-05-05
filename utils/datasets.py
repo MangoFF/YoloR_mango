@@ -203,7 +203,8 @@ class LoadImages:  # for inference
         else:
             # Read image
             self.count += 1
-            img0 = cv2.imread(path)  # BGR
+            #img0 = cv2.imread(path)  # BGR
+            img0 = cv2.cvtColor(np.asarray(Image.open(path).convert('RGB')), cv2.COLOR_RGB2BGR)
             assert img0 is not None, 'Image Not Found ' + path
             print('image %g/%g %s: ' % (self.count, self.nf, path), end='')
 
@@ -472,7 +473,8 @@ class LoadImagesAndLabels(Dataset):  # for training/testing
                 # Extract object detection boxes for a second stage classifier
                 if extract_bounding_boxes:
                     p = Path(self.img_files[i])
-                    img = cv2.imread(str(p))
+                    #img = cv2.imread()
+                    img = cv2.cvtColor(np.asarray(Image.open(str(p)).convert('RGB')), cv2.COLOR_RGB2BGR)
                     h, w = img.shape[:2]
                     for j, x in enumerate(l):
                         f = '%s%sclassifier%s%g_%g_%s' % (p.parent.parent, os.sep, os.sep, x[0], j, p.name)
@@ -755,7 +757,10 @@ class LoadImagesAndLabels9(Dataset):  # for training/testing
                 # Extract object detection boxes for a second stage classifier
                 if extract_bounding_boxes:
                     p = Path(self.img_files[i])
-                    img = cv2.imread(str(p))
+
+                    #img = cv2.imread(str(p))
+                    img = cv2.cvtColor(np.asarray(Image.open(str(p)).convert('RGB')), cv2.COLOR_RGB2BGR)
+
                     h, w = img.shape[:2]
                     for j, x in enumerate(l):
                         f = '%s%sclassifier%s%g_%g_%s' % (p.parent.parent, os.sep, os.sep, x[0], j, p.name)
@@ -927,7 +932,8 @@ def load_image(self, index):
     img = self.imgs[index]
     if img is None:  # not cached
         path = self.img_files[index]
-        img = cv2.imread(path)  # BGR
+        #img = cv2.imread(path)  # BGR
+        img = cv2.cvtColor(np.asarray(Image.open(path).convert('RGB')), cv2.COLOR_RGB2BGR)
         assert img is not None, 'Image Not Found ' + path
         h0, w0 = img.shape[:2]  # orig hw
         r = self.img_size / max(h0, w0)  # resize image to img_size

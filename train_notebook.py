@@ -2,19 +2,6 @@ import argparse
 import logging
 import math
 import os
-os.system("pip install Cython")
-os.system("pip install matplotlib")
-os.system("pip install numpy")
-os.system("pip install opencv-python")
-os.system("pip install Pillow")
-os.system("pip install PyYAML")
-os.system("pip install scipy")
-os.system("pip install tensorboard")
-os.system("pip install tqdm")
-os.system("pip install seaborn")
-os.system("pip install pandas")
-os.system("pip install thop")
-os.system("pip install pycocotools")
 import random
 import time
 from pathlib import Path
@@ -42,7 +29,7 @@ from utils.general import labels_to_class_weights, increment_path, labels_to_ima
     check_dataset, check_file, check_git_status, check_img_size, print_mutation, set_logging
 from utils.google_utils import attempt_download
 from utils.loss import compute_loss
-from utils.plots import plot_images, plot_labels, plot_results, plot_evolution
+from utils.plots import plot_images, plot_labels, plot_results, plot_evolution,plot_lr_scheduler
 from utils.torch_utils import ModelEMA, select_device, intersect_dicts, torch_distributed_zero_first
 
 logger = logging.getLogger(__name__)
@@ -158,7 +145,7 @@ def train(hyp, opt, device, tb_writer=None, wandb=None):
     # https://pytorch.org/docs/stable/_modules/torch/optim/lr_scheduler.html#OneCycleLR
     lf = lambda x: ((1 + math.cos(x * math.pi / epochs)) / 2) * (1 - hyp['lrf']) + hyp['lrf']  # cosine
     scheduler = lr_scheduler.LambdaLR(optimizer, lr_lambda=lf)
-    # plot_lr_scheduler(optimizer, scheduler, epochs)
+    plot_lr_scheduler(optimizer, scheduler, epochs)
 
     # Logging
     if wandb and wandb.run is None:
